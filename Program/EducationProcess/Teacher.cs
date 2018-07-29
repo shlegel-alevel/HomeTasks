@@ -25,7 +25,7 @@ namespace EducationProcess
             {
                 if (value == "")
                 {
-                    throw new System.ArgumentException("Value can not be null");
+                    throw new ArgumentException("Value can not be null");
                 }
                 else
                 {
@@ -44,7 +44,7 @@ namespace EducationProcess
             {
                 if (value == "")
                 {
-                    throw new System.ArgumentException("Value can not be null");
+                    throw new ArgumentException("Value can not be null");
                 }
                 else
                 {
@@ -68,7 +68,7 @@ namespace EducationProcess
                 }
                 else
                 {
-                    throw new System.ArgumentException("Value is not int");
+                    throw new ArgumentException("Value is not int");
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace EducationProcess
             switch (TypeOfTeacher)
             {
                 case TypeOfTeacher.Professor:
-                    MaxCountOfStudents = 20;
+                    MaxCountOfStudents = 10;
                     break;
                 case TypeOfTeacher.Lecturer:
                     MaxCountOfStudents = 15;

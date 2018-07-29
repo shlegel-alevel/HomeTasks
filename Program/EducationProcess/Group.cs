@@ -27,7 +27,7 @@ namespace EducationProcess
                 }
                 else
                 {
-                    throw new System.ArgumentException("Value is not int");
+                    throw new ArgumentException("Value is not int");
                 }
             }
         }
@@ -57,7 +57,7 @@ namespace EducationProcess
             }
             else
             {
-                throw new System.IndexOutOfRangeException("A new student can not be added to this group");
+                throw new IndexOutOfRangeException("A new student can not be added to this group");
             }
 
         }

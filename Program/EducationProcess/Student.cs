@@ -23,7 +23,7 @@ namespace EducationProcess
             {
                 if (value == "")
                 {
-                    throw new System.ArgumentException("Value can not be null");
+                    throw new ArgumentException("Value can not be null");
                 }
                 else
                 {
@@ -42,7 +42,7 @@ namespace EducationProcess
             {
                 if (value == "")
                 {
-                    throw new System.ArgumentException("Value can not be null");
+                    throw new ArgumentException("Value can not be null");
                 }
                 else
                 {
@@ -66,9 +66,14 @@ namespace EducationProcess
                 }
                 else
                 {
-                    throw new System.ArgumentException("Value is not int");
+                    throw new ArgumentException("Value is not int");
                 }
             }
+        }
+
+        public Student ()
+        {
+
         }
 
         public Student (int idOfStudent, string firstNameOfStudent="Ivan", string lastNameOfStudent="Ivanov")

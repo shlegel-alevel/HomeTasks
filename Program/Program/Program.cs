@@ -26,14 +26,14 @@ namespace Program
 
             Group[] groups = new Group[numberOfGroups];
 
-            for (int i=0; i< groups.Length; i++)
+            for (int i = 0; i < groups.Length; i++)
             {
-                groups[i] = InitializeGroup(100 + i, teachers[i], InitializeStudents(9 + i, $"firstNameOfGroup{i + 1}Students", $"lastNameOfGroup{i + 1}Students"));
+                groups[i] = InitializeGroup(100 + i, teachers[i], InitializeStudents(i + 10, $"firstNameOfGroup{i + 1}Students", $"lastNameOfGroup{i + 1}Students"));
             }
 
             do
             {
-                
+
                 ShowMainMenu();
                 switch (Console.ReadLine())
                 {
@@ -42,10 +42,12 @@ namespace Program
                         NavigateToBackMessage("Please press any button to continue");
                         break;
                     case "2":
-                        //Show information certain groups
+                        ViewStudentsInCertainGroup(groups);
+                        NavigateToBackMessage("Please press any button to continue");
                         break;
                     case "3":
-                        //Add a new student to certain group
+                        groups = AddNewStudentToCertainGroup(groups);
+                        NavigateToBackMessage("Please press any button to continue");
                         break;
                     case "4":
                         exit = false;
@@ -58,38 +60,147 @@ namespace Program
 
             }
             while (exit);
-
-
         }
 
-        public static string GetCerteinIdGroup (string id, Group[] groups)
+
+        public static bool IfCerteinIdGroupMatch(string id, Group[] groups)
         {
-            string idGroup = "";
+            bool ifCerteinIdGroupMatch = false;
             for (int i = 0; i < groups.Length; i++)
             {
-                if (string.Equals (id.ToLower(), groups[i].IdGroup))
+                if (string.Equals(id.ToLower(), groups[i].IdGroup))
                 {
-                    idGroup = groups[i].IdGroup;
+                    ifCerteinIdGroupMatch = true;
                 }
             }
+            return ifCerteinIdGroupMatch;
+        }
+
+
+        public static string EnteringCertainGroupId(Group[] groups)
+        {
+            string idGroup;
+            Console.WriteLine();
+            Console.Write($"Please enter ID_group for adding a new student:");
+            idGroup = Console.ReadLine();
 
             return idGroup;
         }
 
 
-
-
-        public static void AddNewUserToCertainGroup(Group[] groups)
+        public static void ViewStudentsInCertainGroup(Group[] groups)
         {
-            for (int i = 0; i < groups.Length; i++)
+            string idGroup;
+            bool exitAddingMenu = true;
+            do
             {
-                Console.WriteLine();
-                Console.WriteLine($"ID_group: {groups[i].IdGroup}");
-                Console.WriteLine($"Curator: {groups[i].Curator.FirstNameOfTeacher} {groups[i].Curator.LastNameOfTeacher}");
-                Console.WriteLine($"Number of students: {groups[i].Students.Length}");
-                Console.WriteLine($"Maximum number of possible Students: {groups[i].Curator.MaxCountOfStudents}");
+                idGroup = EnteringCertainGroupId(groups);
+                if (!IfCerteinIdGroupMatch(idGroup, groups))
+                {
+                    ErrorMessage($"There is not group with id = {idGroup}.");
+                    exitAddingMenu = ReturnToPreviousMenu();
+                }
+                else
+                {
+                    for (int i = 0; i < groups.Length; i++)
+                    {
+                        if (groups[i].IdGroup == idGroup)
+                        {
+                            Console.WriteLine($"The list for stidents for group {groups[i].IdGroup}:");
+                            ShowStudents(groups[i]);
+                            exitAddingMenu = false;
+                        }
+                    }
+                }
+            }
+            while (exitAddingMenu);
+        }
+
+
+        public static void ShowStudents(Group group)
+        {
+            for (int i = 0; i < group.Students.Length; i++)
+            {
+                Console.WriteLine($"{group.Students[i].IdOfStudent}. {group.Students[i].FirstNameOfStudent} {group.Students[i].LastNameOfStudent}");
+            }
+        }
+
+
+
+        public static Group[] AddNewStudentToCertainGroup(Group[] groups)
+        {
+            string idGroup;
+            bool exitAddingMenu = true;
+            do
+            {
+                idGroup = EnteringCertainGroupId(groups);
+                if (!IfCerteinIdGroupMatch(idGroup, groups))
+                {
+                    ErrorMessage($"There is not group with id = {idGroup}.");
+                    exitAddingMenu = ReturnToPreviousMenu();
+                }
+                else
+                {
+                    for (int i = 0; i < groups.Length; i++)
+                    {
+                        if (groups[i].IdGroup == idGroup)
+                        {
+                            groups[i] = AddingNewStudent(groups[i]);
+                            exitAddingMenu = false;
+                        }
+                    }
+
+                }
 
             }
+            while (exitAddingMenu);
+
+            return groups;
+        }
+
+        public static Student EnterNewStudent(Group group)
+        {
+            string firstName, lastName;
+            Student student=new Student();
+            bool exit = true;
+            do
+            {
+                try
+                {
+                    Console.Write("Please enter first name of a new student:");
+                    firstName = Console.ReadLine();
+                    Console.Write("Please enter last name of a new student:");
+                    lastName = Console.ReadLine();
+                    student = new Student(group.Students.Length + 1, firstName, lastName);
+                    exit = false;
+                }
+                catch (ArgumentException ae)
+                {
+                    ErrorMessage(ae.GetType().Name + ":"+ ae.Message);
+                }
+            }
+
+            while (exit);
+
+            return student;
+        }
+
+
+
+        public static Group AddingNewStudent (Group group)
+        {
+            try
+            {
+                Student newStudent = EnterNewStudent(group);
+                group.AddNewStudent(group.Curator, group.Students, newStudent);
+                Console.Write("The student was added successfully.");
+            }
+            catch (IndexOutOfRangeException oe)
+            {
+                ErrorMessage(oe.GetType().Name + ":" + oe.Message);
+            }
+
+            return group;
         }
 
 
@@ -105,6 +216,7 @@ namespace Program
 
             }
         }
+
 
         public static void ShowMainMenu()
         {
@@ -171,5 +283,29 @@ namespace Program
 
         }
 
+        public static bool ReturnToPreviousMenu()
+        {
+            ConsoleKeyInfo key;
+            bool exit = true;
+            ErrorMessage("Please press any button to try again or press \"backspace\" to return to the menu");
+            key = Console.ReadKey();
+            if (key.Key == ConsoleKey.Backspace)
+            {
+                Console.Clear();
+                ShowMainMenu();
+                exit = false;
+            }
+
+            return exit;
+        }
+
+        public static void ErrorMessage(string message)
+        {
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ResetColor();
+
+        }
     }
 }
