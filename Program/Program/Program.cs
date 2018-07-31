@@ -1,5 +1,6 @@
 ﻿using System;
 using EducationProcess;
+using Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,23 +13,17 @@ namespace Program
         static void Main(string[] args)
         {
             bool exit = true;
-            int numberOfGroups = 3;
-            int numberOfTeachers = 7;
+            int numberOfGroups = 7;
+            int numberOfTeachers = 10;
 
 
-
-            Student[] studentsGroup1 = InitializeStudents(9, "firstNameOfGroup1Students", "lastNameOfGroup1Students");
-            Student[] studentsGroup2 = InitializeStudents(10, "firstNameOfGroup2Students", "lastNameOfGroup2Students");
-            Student[] studentsGroup3 = InitializeStudents(12, "firstNameOfGroup3Students", "lastNameOfGroup3Students");
-
-
-            Teacher[] teachers = InitializeTeachers(numberOfTeachers, "firstNameOfCurator", "lastNameOfCurator");
+            Teacher[] teachers = InitializeTeachers(numberOfTeachers);
 
             Group[] groups = new Group[numberOfGroups];
 
             for (int i = 0; i < groups.Length; i++)
             {
-                groups[i] = InitializeGroup(100 + i, teachers[i], InitializeStudents(i + 10, $"firstNameOfGroup{i + 1}Students", $"lastNameOfGroup{i + 1}Students"));
+                groups[i] = InitializeGroup(100 + i, teachers[i], InitializeStudents(i+2));
             }
 
             do
@@ -46,7 +41,7 @@ namespace Program
                         NavigateToBackMessage("Please press any button to continue");
                         break;
                     case "3":
-                        groups = AddNewStudentToCertainGroup(groups);
+                        groups = AddNewStudentMenuLogic(groups);
                         NavigateToBackMessage("Please press any button to continue");
                         break;
                     case "4":
@@ -76,7 +71,6 @@ namespace Program
             return ifCerteinIdGroupMatch;
         }
 
-
         public static string EnteringCertainGroupId(Group[] groups)
         {
             string idGroup;
@@ -86,7 +80,6 @@ namespace Program
 
             return idGroup;
         }
-
 
         public static void ViewStudentsInCertainGroup(Group[] groups)
         {
@@ -116,7 +109,6 @@ namespace Program
             while (exitAddingMenu);
         }
 
-
         public static void ShowStudents(Group group)
         {
             for (int i = 0; i < group.Students.Length; i++)
@@ -125,9 +117,7 @@ namespace Program
             }
         }
 
-
-
-        public static Group[] AddNewStudentToCertainGroup(Group[] groups)
+        public static Group[] AddNewStudentMenuLogic(Group[] groups)
         {
             string idGroup;
             bool exitAddingMenu = true;
@@ -141,15 +131,8 @@ namespace Program
                 }
                 else
                 {
-                    for (int i = 0; i < groups.Length; i++)
-                    {
-                        if (groups[i].IdGroup == idGroup)
-                        {
-                            groups[i] = AddingNewStudent(groups[i]);
-                            exitAddingMenu = false;
-                        }
-                    }
-
+                    groups = AddNewStudentToCertainGroup(idGroup, groups);
+                    exitAddingMenu = false;
                 }
 
             }
@@ -158,51 +141,66 @@ namespace Program
             return groups;
         }
 
-        public static Student EnterNewStudent(Group group)
+        public static Group[] AddNewStudentToCertainGroup(string idGroup, Group [] groups)
         {
             string firstName, lastName;
-            Student student=new Student();
-            bool exit = true;
-            do
-            {
-                try
-                {
-                    Console.Write("Please enter first name of a new student:");
-                    firstName = Console.ReadLine();
-                    Console.Write("Please enter last name of a new student:");
-                    lastName = Console.ReadLine();
-                    student = new Student(group.Students.Length + 1, firstName, lastName);
-                    exit = false;
-                }
-                catch (ArgumentException ae)
-                {
-                    ErrorMessage(ae.GetType().Name + ":"+ ae.Message);
-                }
-            }
-
-            while (exit);
-
-            return student;
-        }
-
-
-
-        public static Group AddingNewStudent (Group group)
-        {
+            Student student = new Student();
+            firstName = EnterNewStudentParameters(out lastName);
             try
             {
-                Student newStudent = EnterNewStudent(group);
-                group.AddNewStudent(group.Curator, group.Students, newStudent);
-                Console.Write("The student was added successfully.");
+
+                
+                for (int i = 0; i < groups.Length; i++)
+                {
+                    if (groups[i].IdGroup == idGroup)
+                    {
+                        student = new Student(groups[i].Students.Length + 1, firstName, lastName);
+                        groups[i].AddNewStudent(groups[i].Curator, groups[i].Students, student);
+                        Console.Write($"The student was added successfully to group {groups[i].IdGroup}");
+                    }
+                }
+            }
+            catch (ArgumentException ae)
+            {
+                ErrorMessage(ae.GetType().Name + ":" + ae.Message);
             }
             catch (IndexOutOfRangeException oe)
             {
                 ErrorMessage(oe.GetType().Name + ":" + oe.Message);
+                for (int i = 0; i < groups.Length; i++)
+                {
+                    if (IfStudentCanBeAdded(groups[i]))
+                    {
+                        groups[i].AddNewStudent(groups[i].Curator, groups[i].Students, student);
+                        Console.WriteLine($"New student was added to group {groups[i].IdGroup}");
+                        break;
+                    }
+                }
             }
 
-            return group;
+            return groups;
         }
 
+        public static string EnterNewStudentParameters(out string lastName)
+        {
+            string firstName;
+                    Console.Write("Please enter the first name of a new student:");
+                    firstName = Console.ReadLine();
+                    Console.Write("Please enter the last name of a new student:");
+                    lastName = Console.ReadLine();
+
+            return firstName;
+        }
+
+        public static bool IfStudentCanBeAdded (Group group)
+        {
+            bool ifStudentCanBeAdded=false;
+                if (group.Students.Length < group.Curator.MaxCountOfStudents)
+                {
+                    ifStudentCanBeAdded = true;
+                }
+            return ifStudentCanBeAdded;
+        }
 
         public static void ViewInfoAboutGroups (Group [] groups)
         {
@@ -217,7 +215,6 @@ namespace Program
             }
         }
 
-
         public static void ShowMainMenu()
         {
             Console.WriteLine("Welcome to the system. Please select what you would you like to do:");
@@ -228,50 +225,7 @@ namespace Program
             Console.Write("Please make your choise: ");
             
         }
-
-
-        public static Student[] InitializeStudents (int numberOfStudents, string firstName, string lastName)
-        {
-            Student[] students = new Student[numberOfStudents];
-
-            for (int i=0; i<students.Length; i++)
-            {
-                students[i] = new Student(i + 1, $"{firstName}{i}", $"{lastName}{i}");
-            }
-
-            return students;
-        }
-
-        public static Teacher [] InitializeTeachers (int numberOfTeachers, string firstName, string lastName )
-        {
-            Teacher [] teachers = new Teacher[numberOfTeachers];
-
-            for (int i = 0; i < teachers.Length; i++)
-            {
-                if (i<3)
-                {
-                    teachers[i] = new Teacher(i + 1, $"{firstName}{i+1}", $"{lastName}{i+1}", TypeOfTeacher.Professor);
-                }
-                else if ((i>=3) && (i<7))
-                {
-                    teachers[i] = new Teacher(i + 1, $"{firstName}{i+1}", $"{lastName}{i+1}", TypeOfTeacher.Lecturer);
-                }
-                else
-                {
-                    teachers[i] = new Teacher(i + 1, $"{firstName}{i}", $"{lastName}{i}");
-                }
-
-            }
-            return teachers;
-        }
-
-        public static Group  InitializeGroup (int idGroup, Teacher teacher, Student [] students)
-        {
-            Group group = new Group(idGroup, teacher, students);
-
-            return group;
-        }
-
+        
         public static void NavigateToBackMessage(string message)
         {
             Console.WriteLine();
@@ -306,6 +260,54 @@ namespace Program
             Console.WriteLine(message);
             Console.ResetColor();
 
+        }
+
+        public static Student[] InitializeStudents(int numberOfStudents)
+        {
+            var firstNames = Enum.GetValues(typeof(FirstNames));
+            var lastNames = Enum.GetValues(typeof(LastNames));
+            Student[] students = new Student[numberOfStudents];
+
+            for (int i = 0; i < students.Length; i++)
+            {
+                students[i] = new Student(i + 1, $"{firstNames.GetValue(i)}", $"{lastNames.GetValue(i + 1)}");
+            }
+
+            return students;
+        }
+
+        public static Teacher[] InitializeTeachers(int numberOfTeachers)
+        {
+            var firstNames = Enum.GetValues(typeof(FirstNames));
+            var lastNames = Enum.GetValues(typeof(LastNames));
+
+
+            Teacher[] teachers = new Teacher[numberOfTeachers];
+
+            for (int i = 0; i < teachers.Length; i++)
+            {
+                if (i > 5)
+                {
+                    teachers[i] = new Teacher(i + 1, $"{firstNames.GetValue(i)}", $"{lastNames.GetValue(i+1)}", TypeOfTeacher.Professor);
+                }
+                else if ((i > 2) && (i <= 5))
+                {
+                    teachers[i] = new Teacher(i + 1, $"{firstNames.GetValue(i)}", $"{lastNames.GetValue(i + 1)}", TypeOfTeacher.Lecturer);
+                }
+                else
+                {
+                    teachers[i] = new Teacher(i + 1, $"{firstNames.GetValue(i)}", $"{lastNames.GetValue(i + 1)}");
+                }
+
+            }
+            return teachers;
+        }
+
+        public static Group InitializeGroup(int idGroup, Teacher teacher, Student[] students)
+        {
+            Group group = new Group(idGroup, teacher, students);
+
+            return group;
         }
     }
 }

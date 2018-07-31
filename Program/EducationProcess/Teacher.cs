@@ -83,7 +83,7 @@ namespace EducationProcess
             switch (TypeOfTeacher)
             {
                 case TypeOfTeacher.Professor:
-                    MaxCountOfStudents = 10;
+                    MaxCountOfStudents = 20;
                     break;
                 case TypeOfTeacher.Lecturer:
                     MaxCountOfStudents = 15;

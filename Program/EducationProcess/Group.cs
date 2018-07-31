@@ -42,7 +42,7 @@ namespace EducationProcess
 
         public void AddNewStudent(Teacher curator, Student [] students, Student student)
         {
-            if (curator.MaxCountOfStudents<students.Length)
+            if (curator.MaxCountOfStudents>students.Length)
             {
                 Student[] newStudents = new Student[students.Length+1];
 
