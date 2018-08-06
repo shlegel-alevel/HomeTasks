@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program", "Program\Program.csproj", "{8E43CAE4-C796-479E-924F-59CFC4039648}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayersLogic", "PlayersLogic\PlayersLogic.csproj", "{654F8D2B-CEEC-49CD-A41D-673235066D7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{1A30E165-2A49-4D53-861D-77395FF9BFE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{8E43CAE4-C796-479E-924F-59CFC4039648}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E43CAE4-C796-479E-924F-59CFC4039648}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E43CAE4-C796-479E-924F-59CFC4039648}.Release|Any CPU.Build.0 = Release|Any CPU
+		{654F8D2B-CEEC-49CD-A41D-673235066D7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{654F8D2B-CEEC-49CD-A41D-673235066D7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{654F8D2B-CEEC-49CD-A41D-673235066D7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{654F8D2B-CEEC-49CD-A41D-673235066D7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A30E165-2A49-4D53-861D-77395FF9BFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A30E165-2A49-4D53-861D-77395FF9BFE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A30E165-2A49-4D53-861D-77395FF9BFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A30E165-2A49-4D53-861D-77395FF9BFE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
