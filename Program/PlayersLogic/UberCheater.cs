@@ -40,6 +40,5 @@ namespace PlayersLogic
             return StepNumber;
         }
 
-
     }
 }

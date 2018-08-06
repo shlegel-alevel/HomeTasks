@@ -23,5 +23,6 @@ namespace PlayersLogic
             TypeOfPlayer = TypeOfPlayer.UsualPlayer;
             Name = name;
         }
+
     }
 }
