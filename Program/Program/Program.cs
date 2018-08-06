@@ -12,7 +12,7 @@ namespace Program
         {
             bool exit = true;
 
-            Console.SetWindowSize(135, Console.WindowHeight);
+            Console.SetWindowSize(140, Console.WindowHeight);
             do
             {
                 StartMenu();
@@ -199,7 +199,7 @@ namespace Program
         {
             Console.WriteLine("Welcome to basket game");
             Console.WriteLine("What would you like to do: ");
-            Console.WriteLine("Enter [1] to start game with default settings: 5 players, weight is random value from 40 to 140) and 100 attempts maximum");
+            Console.WriteLine("Enter [1] to start game with default settings: 5 players, weight is random value from 40 to 140 and 100 attempts maximum");
             Console.WriteLine("Enter [2] to start game with custom settings");
             Console.WriteLine("Enter [3] to exit");
             Console.Write("Please make your choise: ");

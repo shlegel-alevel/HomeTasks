@@ -29,7 +29,7 @@ namespace Game
             MinPossibleValue = 40;
             MaxPossibleValue = 140;
             InitializeDefaultPlayers();
-            MaxCountOfAttempts = maxPossibleValue - minPossibleVale;
+            MaxCountOfAttempts = MaxPossibleValue - MinPossibleValue;
             Random rng = new Random();
             BasketWeight = rng.Next(MinPossibleValue, MaxPossibleValue);
             _valueForNumberOfClosingUser = MaxPossibleValue;
