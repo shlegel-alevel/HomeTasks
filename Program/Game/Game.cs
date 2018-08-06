@@ -13,11 +13,15 @@ namespace Game
         public int MaxCountOfAttempts { get; set; }
         public static int DefaultNumberOfPlayers {get; set;}
         public static int [] UsedNumbers { get; set; }
+        private static string _closingUser;
+        private static int _valueForNumberOfClosingUser;
 
         static GameClass()
         {
             DefaultNumberOfPlayers = 5;
             UsedNumbers = new int[0];
+            _closingUser = "";
+            _valueForNumberOfClosingUser = 0;
         }
 
         public GameClass()
@@ -25,15 +29,17 @@ namespace Game
             MinPossibleValue = 40;
             MaxPossibleValue = 140;
             InitializeDefaultPlayers();
-            MaxCountOfAttempts = MaxPossibleValue- MinPossibleValue;
+            MaxCountOfAttempts = maxPossibleValue - minPossibleVale;
             Random rng = new Random();
             BasketWeight = rng.Next(MinPossibleValue, MaxPossibleValue);
+            _valueForNumberOfClosingUser = MaxPossibleValue;
         }
 
         public GameClass(int minPossibleVale, int maxPossibleValue, TypeOfPlayer [] typeOfPlayers, string [] namesOfPlayers)
         {
             MinPossibleValue = minPossibleVale;
             MaxPossibleValue = maxPossibleValue;
+            _valueForNumberOfClosingUser = MaxPossibleValue;
             MaxCountOfAttempts = maxPossibleValue- minPossibleVale;
             Random rng = new Random();
             BasketWeight = rng.Next(MinPossibleValue, MaxPossibleValue);
@@ -89,14 +95,14 @@ namespace Game
                     if ((Players[i].TypeOfPlayer == TypeOfPlayer.CheaterPlayer)||(Players[i].TypeOfPlayer == TypeOfPlayer.UberCheater))
                     {
                         currentStep = Players[i].PostNumber(UsedNumbers);
-                        ExpandUsedNumbersArray(currentStep);
                     }
                     else
                     {
                         currentStep = Players[i].PostNumber();
-                        ExpandUsedNumbersArray(currentStep);
                     }
-                    uiMessages[Counter] = $"Attempt {++numberOfAttempt}: {Players[i].TypeOfPlayer} with name {Players[i].Name} have made his choise: {currentStep}";
+                    ExpandUsedNumbersArray(currentStep);
+                    CheckingClosingUsers(Players[i], currentStep, _valueForNumberOfClosingUser);
+                    uiMessages[Counter] = $"Attempt {++numberOfAttempt}: {Players[i].TypeOfPlayer} with name {Players[i].Name} has made his choise: {currentStep}";
 
                     Counter++;
                     if (currentStep == BasketWeight)
@@ -107,7 +113,7 @@ namespace Game
                     }
                     else if (numberOfAttempt == MaxCountOfAttempts)
                     {
-                        uiMessages[Counter] = $"There is not any winner after max atempts: {MaxCountOfAttempts}";
+                        uiMessages[Counter] = $"There is not any winner after max atempts: {MaxCountOfAttempts}. The first the most closed value was from user: {_closingUser}";
                         exit = false;
                         break;
                     }
@@ -136,6 +142,18 @@ namespace Game
                 }
             }
             return index;
+        }
+
+        private string CheckingClosingUsers (Player player, int currentstep, int temp)
+        {
+
+            if (Math.Abs(BasketWeight - currentstep) < temp)
+            {
+                _closingUser = $"{player.TypeOfPlayer} with name {player.Name} and value: {currentstep}";
+                _valueForNumberOfClosingUser = Math.Abs(BasketWeight - currentstep);
+            }
+
+            return _closingUser;
         }
 
     }
