@@ -65,7 +65,6 @@ namespace Game
                         break;
                 }
             }
-
         }
 
         private void InitializeDefaultPlayers ()
@@ -86,7 +85,6 @@ namespace Game
             var Counter = 0;
             var exit = true;
             var indexOfCheaters = GetIndexOfCheaters();
-
             do
             {
                 for (int i=0; i<Players.Length; i++)
@@ -146,13 +144,11 @@ namespace Game
 
         private string CheckingClosingUsers (Player player, int currentstep, int temp)
         {
-
             if (Math.Abs(BasketWeight - currentstep) < temp)
             {
                 _closingUser = $"{player.TypeOfPlayer} with name {player.Name} and value: {currentstep}";
                 _valueForNumberOfClosingUser = Math.Abs(BasketWeight - currentstep);
             }
-
             return _closingUser;
         }
 
