@@ -20,15 +20,19 @@ namespace Program
             }
           else
             {
-                Tail.Next = node;
-                Tail = node;
+                Tail=Tail.Next = node;
             }
         }
 
        public void Remove(int value) //in case if there are 2 items with this value         //- remove first
        {
+            Node tempNode = new Node();
+            tempNode = Head;
+
+            Node headNode, tailNode;
+
             if (Head == null)
-                throw new ArgumentNullException("List is empty try again");
+                throw new ArgumentNullException("Element can not be deleted. The list is empty");
 
             if (Head.Value == value)
             {
@@ -36,12 +40,36 @@ namespace Program
             }
             else if (Tail.Value == value)
             {
+                headNode = tailNode= new Node() { Value = tempNode.Value };
+                tempNode = tempNode.Next;
+                while (tempNode.Next != null)
+                {
+                    tailNode.Next = new Node() { Value = tempNode.Value };
+                    tailNode = tailNode.Next;
+                    tempNode = tempNode.Next;
+                }
+                Head = headNode;
+                Tail = tailNode;
             }
             else
             {
-               
+                headNode = tailNode = new Node() { Value = tempNode.Value };
+                tempNode = tempNode.Next;
+                while (tempNode.Next != null)
+                {
+                    if (tempNode.Value != value)
+                    {
+                        tailNode=tailNode.Next = new Node() { Value = tempNode.Value };
+                        tempNode = tempNode.Next;
+                    }
+                    else
+                    {
+                        tempNode = tempNode.Next;
+                    }
+                }
+                tailNode = tailNode.Next = new Node() { Value = tempNode.Value };
+                Head = headNode;
             }
-
         }
 
         public void OutputAllNodes()
@@ -49,14 +77,16 @@ namespace Program
             int iterator = 1;
             Node tempNode = new Node();
             tempNode = Head;
-            do
+
+            if (tempNode == null)
+                throw new NullReferenceException("The list can not be displayed. It is empty");
+            
+            while (tempNode.Next != null)
             {
                 Console.WriteLine($"Element {iterator} = {tempNode.Value}");
                 tempNode = tempNode.Next;
                 iterator++;
             }
-            while (tempNode.Next != null);
-
             Console.WriteLine($"Element {iterator} = {tempNode.Value}");
         }
    }
