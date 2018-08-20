@@ -12,7 +12,7 @@ namespace Program
         {
             MyLinkedList myLinkedList = new MyLinkedList();
 
-            for (var i=0; i<=2; i++)
+            for (var i=0; i<=5; i++)
             {
                 myLinkedList.Add(new Node() { Value = i+1 });
             }

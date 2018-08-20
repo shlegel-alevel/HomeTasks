@@ -55,19 +55,20 @@ namespace Program
             {
                 headNode = tailNode = new Node() { Value = tempNode.Value };
                 tempNode = tempNode.Next;
-                while (tempNode.Next != null)
+                while (tempNode != null)
                 {
                     if (tempNode.Value != value)
                     {
-                        tailNode=tailNode.Next = new Node() { Value = tempNode.Value };
+                        tailNode = tailNode.Next = new Node() { Value = tempNode.Value };
                         tempNode = tempNode.Next;
                     }
                     else
                     {
                         tempNode = tempNode.Next;
+                        tailNode.Next = tempNode;
+                        break;
                     }
                 }
-                tailNode = tailNode.Next = new Node() { Value = tempNode.Value };
                 Head = headNode;
             }
         }
@@ -81,13 +82,12 @@ namespace Program
             if (tempNode == null)
                 throw new NullReferenceException("The list can not be displayed. It is empty");
             
-            while (tempNode.Next != null)
+            while (tempNode != null)
             {
                 Console.WriteLine($"Element {iterator} = {tempNode.Value}");
                 tempNode = tempNode.Next;
                 iterator++;
             }
-            Console.WriteLine($"Element {iterator} = {tempNode.Value}");
         }
    }
 
