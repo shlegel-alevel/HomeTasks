@@ -26,9 +26,16 @@ namespace Program
                 Console.WriteLine("InitialList");
                 myLinkedList.OutputAllNodes();
 
-                Console.WriteLine($"Remove element with value {1 + 1}");
+                Console.WriteLine($"Remove element with value {2}");
                 myLinkedList.Remove(2);
+                myLinkedList.OutputAllNodes();
 
+                Console.WriteLine($"Remove element with value {3}");
+                myLinkedList.Remove(3);
+                myLinkedList.OutputAllNodes();
+
+                Console.WriteLine($"Remove element with value {3}");
+                myLinkedList.Remove(3);
                 myLinkedList.OutputAllNodes();
 
                 for (int i = 1; i <= 5; i++)
@@ -38,6 +45,10 @@ namespace Program
                     myLinkedList.Remove(i + 1);
                     myLinkedList.OutputAllNodes();
                 }
+
+                Console.WriteLine($"Remove element with value {1}");
+                myLinkedList.Remove(1);
+                myLinkedList.OutputAllNodes();
 
                 Console.WriteLine($"Remove element with value {1}");
                 myLinkedList.Remove(1);

@@ -38,19 +38,6 @@ namespace Program
             {
                 Head = Head.Next;
             }
-            else if (Tail.Value == value)
-            {
-                headNode = tailNode= new Node() { Value = tempNode.Value };
-                tempNode = tempNode.Next;
-                while (tempNode.Next != null)
-                {
-                    tailNode.Next = new Node() { Value = tempNode.Value };
-                    tailNode = tailNode.Next;
-                    tempNode = tempNode.Next;
-                }
-                Head = headNode;
-                Tail = tailNode;
-            }
             else
             {
                 headNode = tailNode = new Node() { Value = tempNode.Value };
@@ -70,6 +57,7 @@ namespace Program
                     }
                 }
                 Head = headNode;
+                Tail = tailNode;
             }
         }
 
