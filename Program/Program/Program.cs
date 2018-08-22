@@ -12,8 +12,9 @@ namespace Program
         {
             try
             {
-                string[] array = { "(", "(", ")", ")" };
+                string[] array = {")", "(", "(", "(", ")", ")" };
 
+               // string[] array = { };
                 Console.WriteLine(IfMassiveIsValid(array));
 
             }
@@ -29,16 +30,20 @@ namespace Program
 
         private static bool IfMassiveIsValid (string [] array)
         {
+            if (array.Length ==0)
+                throw new ArgumentException("Array is empty");
+            for (int i = 0; i < array.Length; i++)
+            {
+                if ((array[i] !="(") && (array[i] != ")"))
+                throw new ArgumentException("Incorect symbols");
+            }
             var result = true;
             var counter=0;
             for (int i=0; i<array.Length; i++)
             {
                 if (array[i] == "(")
                     counter++;
-                else if (array[i] == ")")
-                     counter--;
-                else 
-                throw new ArgumentException ("Incorect symbols");
+                else counter--;
                 if (counter <0)
                 {
                     result = false;
