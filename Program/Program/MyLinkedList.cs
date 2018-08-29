@@ -20,16 +20,14 @@ namespace Program
             }
           else
             {
-                Tail=Tail.Next = node;
+                Tail =Tail.Next = node;
             }
         }
 
        public void Remove(int value) //in case if there are 2 items with this value         //- remove first
        {
             Node tempNode = new Node();
-            tempNode = Head;
-
-            Node headNode, tailNode;
+            Node current, previous;
 
             if (Head == null)
                 throw new ArgumentNullException("Element can not be deleted. The list is empty");
@@ -40,24 +38,25 @@ namespace Program
             }
             else
             {
-                headNode = tailNode = new Node() { Value = tempNode.Value };
-                tempNode = tempNode.Next;
-                while (tempNode != null)
+                current = Head.Next;
+                previous = Head;
+                while (current !=null)
                 {
-                    if (tempNode.Value != value)
+                    if (current.Value == value)
                     {
-                        tailNode = tailNode.Next = new Node() { Value = tempNode.Value };
-                        tempNode = tempNode.Next;
+                        previous.Next = current.Next;
+                        current = current.Next;
+                        break;
+
                     }
                     else
                     {
-                        tempNode = tempNode.Next;
-                        tailNode.Next = tempNode;
-                        break;
+                        current = current.Next;
+                        previous = previous.Next;
                     }
                 }
-                Head = headNode;
-                Tail = tailNode;
+                if (current == null)
+                    Tail = previous;
             }
         }
 

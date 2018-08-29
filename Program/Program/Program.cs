@@ -12,9 +12,9 @@ namespace Program
         {
             MyLinkedList myLinkedList = new MyLinkedList();
 
-            for (var i=0; i<=5; i++)
+            for (var i = 0; i <= 5; i++)
             {
-                myLinkedList.Add(new Node() { Value = i+1 });
+                myLinkedList.Add(new Node() { Value = i + 1 });
             }
 
             myLinkedList.Add(new Node() { Value = 1 });
@@ -57,7 +57,7 @@ namespace Program
             }
             catch (ArgumentNullException ae)
             {
-                Console.WriteLine (ae.Message);
+                Console.WriteLine(ae.Message);
             }
             catch (NullReferenceException ne)
             {
